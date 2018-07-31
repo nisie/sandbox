@@ -1,11 +1,10 @@
 package com.nisie.sandbox;
 
 import android.annotation.SuppressLint;
-import android.graphics.Point;
+import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.DragEvent;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -17,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
 
     ImageView testImage;
     TextView info;
+    TextView infoImg;
+
     View tag;
     FrameLayout imageContainer;
 
@@ -27,8 +28,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         testImage = findViewById(R.id.test_image);
+        infoImg = findViewById(R.id.info_image);
         info = findViewById(R.id.info);
         imageContainer = findViewById(R.id.image_container);
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+        infoImg.setText("Width : " + width + " Height : " + height);
+
+        ConstraintLayout.LayoutParams parms = new ConstraintLayout.LayoutParams(width, width);
+        imageContainer.setLayoutParams(parms);
+        imageContainer.requestLayout();
 
         testImage.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("SetTextI18n")
@@ -64,22 +76,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        testImage.setOnDragListener(new View.OnDragListener() {
-//            @Override
-//            public boolean onDrag(View v, DragEvent event) {
-//                switch (event.getAction()) {
-//                    case DragEvent.ACTION_DRAG_STARTED:
-//                        info.setText("Touch coordinates DOWN: " +
-//                                String.valueOf(event.getX()) + "x" + String.valueOf(event.getY()));
-//                        break;
-//                    case DragEvent.ACTION_DRAG_LOCATION:
-//                        Point touchPosition = getTouchPositionFromDragEvent(v, event);
-//                        //do something with the position (a scroll i.e);
-//                        break;
-//                    default:
-//                }
-//                return true;
-//            }
-//        });
+
     }
 }
