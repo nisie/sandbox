@@ -55,8 +55,6 @@ public class MainActivity extends AppCompatActivity {
                         params.topMargin = Math.round(event.getY());
 
                         tag.setBackgroundColor(getResources().getColor(R.color.black));
-
-
                         imageContainer.addView(tag, params);
                         break;
                     default:
@@ -66,6 +64,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+//        testImage.setOnDragListener(new View.OnDragListener() {
+//            @Override
+//            public boolean onDrag(View v, DragEvent event) {
+//                switch (event.getAction()) {
+//                    case DragEvent.ACTION_DRAG_STARTED:
+//                        info.setText("Touch coordinates DOWN: " +
+//                                String.valueOf(event.getX()) + "x" + String.valueOf(event.getY()));
+//                        break;
+//                    case DragEvent.ACTION_DRAG_LOCATION:
+//                        Point touchPosition = getTouchPositionFromDragEvent(v, event);
+//                        //do something with the position (a scroll i.e);
+//                        break;
+//                    default:
+//                }
+//                return true;
+//            }
+//        });
     }
 }
