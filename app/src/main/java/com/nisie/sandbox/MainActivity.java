@@ -9,7 +9,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
 
     View tag;
     FrameLayout imageContainer;
+
+    private int screenWidth;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -34,11 +35,11 @@ public class MainActivity extends AppCompatActivity {
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int height = displayMetrics.heightPixels;
-        int width = displayMetrics.widthPixels;
-        infoImg.setText("Width : " + width + " Height : " + height);
+        int screenHeight = displayMetrics.heightPixels;
+        screenWidth = displayMetrics.widthPixels;
+        infoImg.setText("Width : " + screenWidth + " Height : " + screenHeight);
 
-        ConstraintLayout.LayoutParams parms = new ConstraintLayout.LayoutParams(width, width);
+        ConstraintLayout.LayoutParams parms = new ConstraintLayout.LayoutParams(screenWidth, screenWidth);
         imageContainer.setLayoutParams(parms);
         imageContainer.requestLayout();
 
@@ -63,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
                                 100,
                                 50
                         );
-                        params.leftMargin = Math.round(event.getX());
-                        params.topMargin = Math.round(event.getY());
+                        params.leftMargin = getXPosition(event.getX());
+                        params.topMargin = getYPosition(event.getY());
 
                         tag.setBackgroundColor(getResources().getColor(R.color.black));
                         imageContainer.addView(tag, params);
@@ -77,5 +78,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private int getYPosition(float y) {
+        if (y > screenWidth - 50)
+            return Math.round(screenWidth - 50);
+        else return Math.round(y);
+    }
+
+    private int getXPosition(float x) {
+        if (x > screenWidth - 100)
+            return Math.round(screenWidth - 100);
+        else return Math.round(x);
     }
 }
