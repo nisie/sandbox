@@ -13,14 +13,23 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int ARROW_WIDTH = 30;
+    private static final int ARROW_HEIGHT = 30;
+
+    private static final int TEXT_WIDTH = 120;
+    private static final int TEXT_HEIGHT = 50;
     ImageView testImage;
     TextView info;
     TextView infoImg;
 
     View tag;
+    TextView tagText;
+
     FrameLayout imageContainer;
 
     private int screenWidth;
+
+    float dX, dY;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -60,15 +69,31 @@ public class MainActivity extends AppCompatActivity {
                                         (Math.round(event.getY()))));
 
                         tag = new View(MainActivity.this);
+                        tagText = new TextView(MainActivity.this);
                         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(
-                                100,
-                                50
+                                ARROW_WIDTH,
+                                ARROW_HEIGHT
                         );
-                        params.leftMargin = getXPosition(event.getX());
-                        params.topMargin = getYPosition(event.getY());
 
-                        tag.setBackgroundColor(getResources().getColor(R.color.black));
+                        int xTagPos = getXPosition(event.getX());
+                        int yTagPos = getYPosition(event.getY());
+                        params.leftMargin = xTagPos;
+                        params.topMargin = yTagPos;
+                        setArrow(xTagPos, tag);
+                        tag.setOnTouchListener(onTagTouch());
+
+                        ConstraintLayout.LayoutParams textParams = new ConstraintLayout.LayoutParams(
+                                TEXT_WIDTH,
+                                TEXT_HEIGHT
+                        );
+                        textParams.leftMargin = getXTextPosition(xTagPos);
+                        textParams.topMargin = getYTextPosition(yTagPos);
+                        tagText.setBackgroundColor(getResources().getColor(R.color.black));
+                        tagText.setTextColor(getResources().getColor(R.color.white));
+                        tagText.setText("Test Tag");
+
                         imageContainer.addView(tag, params);
+                        imageContainer.addView(tagText, textParams);
                         break;
                     default:
                         break;
@@ -80,15 +105,64 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void setArrow(int xTagPos, View tag) {
+        tag.setBackground(getResources().getDrawable(R.drawable.ic_play_arrow_black_24dp));
+        if (xTagPos < (screenWidth / 2))
+            tag.setRotation(180);
+    }
+
+    private int getYTextPosition(int yTagPos) {
+        if (yTagPos > screenWidth - TEXT_HEIGHT)
+            return Math.round(screenWidth - TEXT_HEIGHT);
+        else return yTagPos;
+    }
+
+    private int getXTextPosition(int xTagPos) {
+        if (xTagPos < (screenWidth / 2))
+            return xTagPos + ARROW_WIDTH;
+        else
+            return xTagPos - ARROW_WIDTH - TEXT_WIDTH;
+    }
+
+    private View.OnTouchListener onTagTouch() {
+        return new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+
+                        dX = v.getX() - event.getRawX();
+                        dY = v.getY() - event.getRawY();
+                        break;
+
+                    case MotionEvent.ACTION_MOVE:
+
+                        v.animate()
+                                .x(event.getRawX() + dX)
+                                .y(event.getRawY() + dY)
+                                .setDuration(0)
+                                .start();
+                        break;
+                    default:
+                        return false;
+                }
+                return true;
+            }
+        };
+    }
+
+
     private int getYPosition(float y) {
-        if (y > screenWidth - 50)
-            return Math.round(screenWidth - 50);
+        if (y > screenWidth - ARROW_HEIGHT)
+            return Math.round(screenWidth - ARROW_HEIGHT);
         else return Math.round(y);
     }
 
     private int getXPosition(float x) {
-        if (x > screenWidth - 100)
-            return Math.round(screenWidth - 100);
+        if (x > screenWidth - ARROW_WIDTH)
+            return Math.round(screenWidth - ARROW_WIDTH);
         else return Math.round(x);
     }
 }
