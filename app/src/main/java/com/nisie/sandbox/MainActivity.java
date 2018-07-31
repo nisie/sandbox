@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         if (xTagPos < (screenWidth / 2))
             return xTagPos + ARROW_WIDTH;
         else
-            return xTagPos - ARROW_WIDTH - TEXT_WIDTH;
+            return xTagPos - TEXT_WIDTH;
     }
 
     private View.OnTouchListener onTagTouch() {
