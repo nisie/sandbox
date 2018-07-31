@@ -178,6 +178,9 @@ public class MainActivity extends AppCompatActivity {
     private int getXPosition(float x) {
         if (x > screenWidth - ARROW_WIDTH)
             return Math.round(screenWidth - ARROW_WIDTH);
-        else return Math.round(x);
+        else if (x > screenWidth / 2)
+            return Math.round(x - ARROW_WIDTH);
+        else
+            return Math.round(x);
     }
 }
