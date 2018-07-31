@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private int screenWidth;
 
     float dX, dY;
+    int index = 0;
+    int indexText = 0;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -92,8 +94,21 @@ public class MainActivity extends AppCompatActivity {
                         tagText.setTextColor(getResources().getColor(R.color.white));
                         tagText.setText("Test Tag");
 
+                        tagText.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                int indexDelete = v.getId();
+                                int indexDeleteTag = indexDelete - 1;
+                                imageContainer.removeView(findViewById(indexDelete));
+                                imageContainer.removeView(findViewById(indexDeleteTag));
+                            }
+                        });
+                        tag.setId(index);
+                        tagText.setId(index + 1);
                         imageContainer.addView(tag, params);
                         imageContainer.addView(tagText, textParams);
+                        index += 2;
+
                         break;
                     default:
                         break;
