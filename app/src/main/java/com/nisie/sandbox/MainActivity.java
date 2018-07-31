@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                         int yTagPos = getYPosition(event.getY());
                         params.leftMargin = xTagPos;
                         params.topMargin = yTagPos;
-                        setArrow(xTagPos, tag);
+                        setArrow(yTagPos, tag);
                         tag.setOnTouchListener(onTagTouch());
 
                         ConstraintLayout.LayoutParams textParams = new ConstraintLayout.LayoutParams(
@@ -120,23 +120,38 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void setArrow(int xTagPos, View tag) {
+    private void setArrow(int yTagPos, View tag) {
         tag.setBackground(getResources().getDrawable(R.drawable.ic_play_arrow_black_24dp));
-        if (xTagPos < (screenWidth / 2))
-            tag.setRotation(180);
+        if (yTagPos < (screenWidth / 2))
+            tag.setRotation(270);
+        else {
+            tag.setRotation(90);
+        }
     }
 
     private int getYTextPosition(int yTagPos) {
-        if (yTagPos > screenWidth - TEXT_HEIGHT)
-            return Math.round(screenWidth - TEXT_HEIGHT);
-        else return yTagPos;
+//        if (yTagPos > screenWidth - TEXT_HEIGHT)
+//            return Math.round(screenWidth - TEXT_HEIGHT);
+//        else return yTagPos;
+
+        if (yTagPos < screenWidth / 2) {
+            return yTagPos + ARROW_HEIGHT;
+        } else {
+            return yTagPos - TEXT_HEIGHT;
+        }
     }
 
     private int getXTextPosition(int xTagPos) {
-        if (xTagPos < (screenWidth / 2))
-            return xTagPos + ARROW_WIDTH;
-        else
-            return xTagPos - TEXT_WIDTH;
+//        if (xTagPos < (screenWidth / 2))
+//            return xTagPos + ARROW_WIDTH;
+//        else
+//            return xTagPos - TEXT_WIDTH;
+
+        if (xTagPos > screenWidth - TEXT_WIDTH) {
+            return screenWidth - TEXT_WIDTH;
+        } else {
+            return xTagPos;
+        }
     }
 
     private View.OnTouchListener onTagTouch() {
